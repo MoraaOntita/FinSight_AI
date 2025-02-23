@@ -11,7 +11,7 @@ class DataFetchConfig:
     output_file: Path
 
 @dataclass(frozen=True)
-class DataStorageConfig:  # ✅ Add this class
+class DataStorageConfig:
     root_dir: Path
     db_url: str
     table_name: str
