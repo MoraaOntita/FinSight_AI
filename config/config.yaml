@@ -1,0 +1,10 @@
+artifacts_root: artifacts
+
+# Data fetching config
+data_fetch:
+  root_dir: artifacts/data_fetch
+  ticker: "AAPL"
+  period: "5y"
+  start_date: "2020-01-01"
+  end_date: "2024-12-31"
+  output_file: artifacts/data_fetch/apple.csv
