@@ -8,3 +8,9 @@ data_fetch:
   start_date: "2020-01-01"
   end_date: "2024-12-31"
   output_file: artifacts/data_fetch/apple.csv
+
+
+data_storage:
+  root_dir: artifacts/data_storage
+  db_url: "postgresql://admin:admin@localhost:5432/apple_db"
+  table_name: "apple_stock_data"

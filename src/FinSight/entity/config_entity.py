@@ -5,7 +5,13 @@ from pathlib import Path
 class DataFetchConfig:
     root_dir: Path
     ticker: str
-    period: str
     start_date: str
     end_date: str
+    period: str
     output_file: Path
+
+@dataclass(frozen=True)
+class DataStorageConfig:  # ✅ Add this class
+    root_dir: Path
+    db_url: str
+    table_name: str
