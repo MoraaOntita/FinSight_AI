@@ -5,7 +5,7 @@ import sys
 # Add src directory to sys.path
 sys.path.append(os.path.abspath("src"))
 
-from src.FinSight.utils.common import read_yaml, create_directories
+from FinSight.utils.common import read_yaml, create_directories
 from src.FinSight.entity.config_entity import DataFetchConfig
 from src.FinSight import logger
 
