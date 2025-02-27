@@ -1,11 +1,12 @@
 import sys
 import os
+from pathlib import Path
 
 # Add src directory to sys.path
 sys.path.append(os.path.abspath("src"))
 
 from src.FinSight.config.configuration import ConfigurationManager
-from FinSight.components.data_storage import DataStorage
+from src.FinSight.components.data_storage import DataStorage
 from src.FinSight import logger
 
 STAGE_NAME = "Data Storage Stage"
@@ -16,8 +17,12 @@ class DataStoragePipeline:
 
     def main(self):
         config = ConfigurationManager()
+        data_fetch_config = config.get_data_fetch_config()  # Get fetch config to access output file
         data_storage_config = config.get_data_storage_config()
-        data_storage = DataStorage(config=data_storage_config)
+        data_storage = DataStorage(
+            config=data_storage_config,
+            data_fetch_output_file=Path(data_fetch_config.output_file)  # Pass the CSV file path
+        )
         data_storage.store_data()
 
 if __name__ == "__main__":

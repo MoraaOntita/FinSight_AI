@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 from FinSight.constants import CONFIG_FILE_PATH
 from FinSight.utils.common import read_yaml, create_directories
 from FinSight.entity.config_entity import DataFetchConfig, DataStorageConfig
@@ -24,9 +25,10 @@ class ConfigurationManager:
 
     def get_data_storage_config(self) -> DataStorageConfig:
         config = self.config.data_storage
-        create_directories([config.root_dir])
+        create_directories([Path(config.root_dir)])
         return DataStorageConfig(
-            root_dir=config.root_dir,
+            root_dir=Path(config.root_dir),
             db_url=config.db_url,
             table_name=config.table_name
         )
+
