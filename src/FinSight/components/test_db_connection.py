@@ -1,4 +1,3 @@
-# src/FinSight/components/test_db_connection.py
 from sqlalchemy import create_engine, text
 from FinSight.config.configuration import ConfigurationManager
 
