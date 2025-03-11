@@ -14,3 +14,9 @@ data_storage:
   root_dir: artifacts/data_storage
   db_url: "postgresql://admin:admin@localhost:5432/apple_db"
   table_name: "apple_stock_data"
+
+
+langchain:
+  llm_provider: "deepseek"
+  llm_model: "deepseek-r1-distill-llama-70b"
+  temperature: 0.7

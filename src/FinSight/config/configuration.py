@@ -22,7 +22,6 @@ class ConfigurationManager:
             output_file=config.output_file
         )
 
-
     def get_data_storage_config(self) -> DataStorageConfig:
         config = self.config.data_storage
         create_directories([Path(config.root_dir)])
@@ -32,3 +31,7 @@ class ConfigurationManager:
             table_name=config.table_name
         )
 
+    #FIX: Add this method
+    def get_langchain_config(self):
+        config = self.config.langchain
+        return config
