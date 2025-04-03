@@ -6,7 +6,7 @@ from pathlib import Path
 sys.path.append(os.path.abspath("src"))
 
 from src.FinSight.config.configuration import ConfigurationManager
-from src.FinSight.components.data_storage import DataStorage
+from FinSight.components.data_storage_02 import DataStorage
 from src.FinSight import logger
 
 STAGE_NAME = "Data Storage Stage"

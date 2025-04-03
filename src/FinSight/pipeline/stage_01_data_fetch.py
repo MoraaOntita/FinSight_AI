@@ -5,7 +5,7 @@ import os
 sys.path.append(os.path.abspath("src"))
 
 from src.FinSight.config.configuration import ConfigurationManager
-from src.FinSight.components.fetch_apple_data import DataFetch
+from FinSight.components.fetch_apple_data_01 import DataFetch
 from src.FinSight import logger
 
 STAGE_NAME = "Data Fetching"
