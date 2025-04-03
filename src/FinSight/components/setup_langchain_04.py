@@ -29,5 +29,3 @@ def setup_langchain_db():
     except Exception as e:
         print(f"Failed to setup LangChain database: {str(e)}")
 
-if __name__ == "__main__":
-    setup_langchain_db()

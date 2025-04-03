@@ -19,3 +19,8 @@ class DataStorageConfig:
 @dataclass(frozen=True)
 class DBConnectionConfig:
     db_url: str
+
+@dataclass(frozen=True)
+class LangChainConfig:
+    db_url: str
+    table_name: str
