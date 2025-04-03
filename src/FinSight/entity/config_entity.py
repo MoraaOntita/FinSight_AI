@@ -15,3 +15,7 @@ class DataStorageConfig:
     root_dir: Path
     db_url: str
     table_name: str
+
+@dataclass(frozen=True)
+class DBConnectionConfig:
+    db_url: str

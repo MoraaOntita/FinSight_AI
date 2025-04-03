@@ -2,7 +2,11 @@ import os
 from pathlib import Path
 from FinSight.constants import CONFIG_FILE_PATH
 from FinSight.utils.common import read_yaml, create_directories
-from FinSight.entity.config_entity import DataFetchConfig, DataStorageConfig
+from FinSight.entity.config_entity import DataFetchConfig, DataStorageConfig, DBConnectionConfig
+from box import ConfigBox
+from FinSight import logger
+from typing import Any
+from dataclasses import dataclass
 
 class ConfigurationManager:
     def __init__(self):
@@ -31,7 +35,25 @@ class ConfigurationManager:
             table_name=config.table_name
         )
 
-    #FIX: Add this method
+    def get_db_connection_config(self) -> DBConnectionConfig:
+        """
+        Returns the DBConnectionConfig object containing the database URL.
+        """
+        config = self.config.data_storage
+        return DBConnectionConfig(db_url=config.db_url)
+
     def get_langchain_config(self):
-        config = self.config.langchain
-        return config
+        """
+        Returns the langchain configuration, if available.
+        """
+        if 'langchain' in self.config:
+            return self.config.langchain
+        else:
+            return None
+        
+    def get_db_url(self) -> str:
+            """
+            Returns the database URL from the data storage configuration.
+            This method will now work again to return the db_url directly.
+            """
+            return self.config.data_storage.db_url

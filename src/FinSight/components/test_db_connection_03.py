@@ -1,22 +1,19 @@
 from sqlalchemy import create_engine, text
-from FinSight.config.configuration import ConfigurationManager
+from FinSight import logger
 
-def test_db_connection():
-    try:
-        # Get configuration
-        config_manager = ConfigurationManager()
-        db_config = config_manager.get_data_storage_config()
-        
-        # Create engine and test connection
-        engine = create_engine(db_config.db_url)
-        with engine.connect() as connection:
-            print(f"Successfully connected to database: {db_config.db_url.split('@')[1]}")
-            # Use text() for raw SQL in SQLAlchemy 2.0+
-            version = connection.execute(text("SELECT version();")).fetchone()[0]
-            print(f"PostgreSQL Version: {version}")
-            
-    except Exception as e:
-        print(f"Database connection failed: {str(e)}")
+class DBConnectionTest:
+    def __init__(self, db_url: str):
+        self.db_url = db_url
 
-if __name__ == "__main__":
-    test_db_connection()
+    def test_connection(self):
+        try:
+            # Create engine and test connection
+            engine = create_engine(self.db_url)
+            with engine.connect() as connection:
+                logger.info(f"Successfully connected to database: {self.db_url.split('@')[1]}")
+                # Use text() for raw SQL in SQLAlchemy 2.0+
+                version = connection.execute(text("SELECT version();")).fetchone()[0]
+                logger.info(f"PostgreSQL Version: {version}")
+        except Exception as e:
+            logger.error(f"Database connection failed: {str(e)}")
+            logger.exception(e)
