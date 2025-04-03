@@ -45,13 +45,30 @@ def initialize_components():
 # Node to generate SQL query
 def generate_sql(state: AgentState, llm, table_info) -> AgentState:
     prompt_template = (
-        "Given the following database schema:\n{table_info}\n\n"
-        "Generate a valid SQL query for PostgreSQL to answer this question: {question}\n"
-        "Return only the SQL query itself, without any explanation or additional text.\n"
-        "Use the table name 'apple_stock_data'.\n"
-        "Assume columns include 'date' (timestamp), 'close_price' (numeric), and others.\n"
-        "Use date range syntax (e.g., date >= 'YYYY-MM-DD') for year-based queries."
-    )
+    "You are an expert in writing PostgreSQL queries. "
+    "Given the following database schema:\n{table_info}\n\n"
+    "Follow these instructions carefully:\n"
+    "- Ensure the query is syntactically correct and optimized for execution.\n"
+    "- Use the exact table and column names from the schema.\n"
+    "- Apply appropriate SQL clauses (e.g., WHERE, GROUP BY, ORDER BY) based on the question.\n"
+    "- Use LIMIT where necessary to optimize performance.\n"
+    "- If the query involves dates, format them correctly (e.g., 'YYYY-MM-DD').\n"
+    "- If aggregation is needed (e.g., SUM, AVG, MAX), ensure correct grouping.\n"
+    "- Do NOT include explanations, comments, or additional text—return only the SQL query.\n\n"
+    "Here are a few examples of correct SQL queries:\n"
+    "Example 1:\n"
+    "User's question: What was the highest closing price of AAPL stock in 2023?\n"
+    "Generated SQL:\n"
+    "SELECT MAX(close_price) FROM stock_data WHERE symbol = 'AAPL' AND date BETWEEN '2023-01-01' AND '2023-12-31';\n\n"
+    "Example 2:\n"
+    "User's question: Show the average volume of Tesla stock in the last 6 months.\n"
+    "Generated SQL:\n"
+    "SELECT AVG(volume) FROM stock_data WHERE symbol = 'TSLA' AND date >= CURRENT_DATE - INTERVAL '6 months';\n\n"
+    "Now, generate a PostgreSQL query for the following question:\n"
+    "{question}\n\n"
+    "Return ONLY the SQL query, with no explanations, tags, or extra text."
+)
+
     prompt = PromptTemplate(template=prompt_template, input_variables=["table_info", "question"])
     chain = prompt | llm
     
