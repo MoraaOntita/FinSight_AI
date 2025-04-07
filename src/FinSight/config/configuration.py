@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 from FinSight.constants import CONFIG_FILE_PATH
 from FinSight.utils.common import read_yaml, create_directories
-from FinSight.entity.config_entity import DataFetchConfig, DataStorageConfig, DBConnectionConfig
+from FinSight.entity.config_entity import DataFetchConfig, DataStorageConfig, DBConnectionConfig, LangChainConfig
 from box import ConfigBox
 from FinSight import logger
 from typing import Any
@@ -57,3 +57,18 @@ class ConfigurationManager:
             This method will now work again to return the db_url directly.
             """
             return self.config.data_storage.db_url
+    
+    def get_langchain_config(self):
+        """Returns the LangChain config from the loaded YAML file."""
+        try:
+            lc_config = self.config["langchain"]
+            return LangChainConfig(
+                db_url=lc_config["db_url"],
+                table_name=lc_config["table_name"],
+                llm_model=lc_config["llm_model"],
+                temperature=lc_config["temperature"],
+                prompt_template=lc_config["prompt_template"]
+            )
+        except KeyError as e:
+            logger.error(f"Missing key in configuration for langchain: {e}")
+            raise

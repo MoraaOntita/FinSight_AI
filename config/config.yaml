@@ -20,3 +20,11 @@ langchain:
   llm_provider: "deepseek"
   llm_model: "deepseek-r1-distill-llama-70b"
   temperature: 0.7
+  prompt_template: |
+    You are an assistant that generates SQL queries based on natural language questions.
+    Given the following question, produce a valid SQL query for the provided database.
+    Question: {question}
+    SQL Query:
+
+  db_url: "postgresql://user:password@localhost:5432/database"
+  table_name: "stocks"

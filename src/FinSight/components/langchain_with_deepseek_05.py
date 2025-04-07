@@ -5,8 +5,9 @@ from langchain.prompts import PromptTemplate
 from FinSight.config.configuration import ConfigurationManager
 from dotenv import load_dotenv
 import os
+from src.FinSight import logger
 
-def setup_langchain_with_deepseek():
+def setup_langchain_with_deepseek(query_input: str):  # Query is passed dynamically
     try:
         # Load environment variables
         load_dotenv()
@@ -33,35 +34,29 @@ def setup_langchain_with_deepseek():
             temperature=lc_config.temperature
         )
 
-        # Define a prompt template for generating SQL queries
-        prompt_template = (
-            "You are an assistant that generates SQL queries based on natural language questions.\n"
-            "Given the following question, produce a valid SQL query for the provided database.\n\n"
-            "Question: {question}\n\nSQL Query:"
-        )
+        # Fetch the prompt template from config for dynamic usage
+        prompt_template = lc_config.prompt_template  # Dynamic loading of the prompt template
         prompt = PromptTemplate(template=prompt_template, input_variables=["question"])
 
         # Create the chain manually using LLMChain
         chain = LLMChain(llm=llm, prompt=prompt)
 
-        print("LangChain with DeepSeek setup successful!")
-        print(f"Connected to database: {db_config.db_url.split('@')[1]}")
-        print(f"Table included: {db_config.table_name}")
-        print(f"Using LLM: {lc_config.llm_model}")
+        logger.info("LangChain with DeepSeek setup successful!")
+        logger.info(f"Connected to database: {db_config.db_url.split('@')[1]}")
+        logger.info(f"Table included: {db_config.table_name}")
+        logger.info(f"Using LLM: {lc_config.llm_model}")
 
-        # Test with a sample query
-        sample_query = "What was the highest closing price of AAPL stock in 2023?"
-        generated_sql = chain.run(question=sample_query)
+        # Processing the dynamic query passed as an argument
+        logger.info(f"Processing query: {query_input}")
 
-        print(f"Sample query: {sample_query}")
-        print(f"Generated SQL: {generated_sql}")
+        # Generate SQL from the dynamic query
+        generated_sql = chain.run(question=query_input)
+        logger.info(f"Generated SQL: {generated_sql}")
 
         # Execute the generated query
         result = db.run(generated_sql)
-        print(f"Query result: {result}")
+        logger.info(f"Query result: {result}")
 
     except Exception as e:
-        print(f"Failed to setup LangChain with DeepSeek: {str(e)}")
+        logger.error(f"Failed to setup LangChain with DeepSeek: {str(e)}")
 
-if __name__ == "__main__":
-    setup_langchain_with_deepseek()

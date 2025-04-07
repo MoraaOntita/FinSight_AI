@@ -24,3 +24,6 @@ class DBConnectionConfig:
 class LangChainConfig:
     db_url: str
     table_name: str
+    llm_model: str
+    temperature: float
+    prompt_template: str
